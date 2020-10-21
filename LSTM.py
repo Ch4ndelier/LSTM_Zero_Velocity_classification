@@ -36,12 +36,13 @@ if (
 else:
     print("raw audio files")
 
+
 class LSTM(torch.nn.Module):
-    def __init__(self, input_size, hidden_size, batch_size, output_size = 8, num_layers = 4):
+    def __init__(self, input_size, hidden_size, batch_size, output_size=8, num_layers=4):
         super(LSTM, self).__init__()
         self.input_size = input_size
         self.hidden_size = hidden_size
-        self.batch_size = batch_size 
+        self.batch_size = batch_size
         self.num_layers = num_layers
 
         self.lstm = torch.nn.LSTM(
@@ -58,13 +59,13 @@ class LSTM(torch.nn.Module):
         )
 
     def forward(self, input):
-        # 输入input x:(seq_len, batch, input_size) 
-        # seq_len:句长，这里不可能为1,论文有问题 
+        # 输入input x:(seq_len, batch, input_size)
+        # seq_len:句长，这里不可能为1,论文有问题
         # batch:一次传入数据的量
         # input_size:单词向量长度，即输入量长度
         lstm_out, hidden = self.lstm(input)
         logits = self.linear(lstm_out[-1])
-        class_scores = F.log_softmax(logits, dim = 1)
+        class_scores = F.log_softmax(logits, dim=1)
         return class_scores
 
     def get_accuracy(self, logits, target):
@@ -81,15 +82,15 @@ num_epochs = 20
 # Define model
 print("Build LSTM model ..")
 model = LSTM(
-    input_size = 33, #TODO : 6
-    hidden_size = 90,
-    batch_size = batch_size,
-    output_size = 8, #TODO : 2
-    num_layers = 4
+    input_size=33,  # TODO : 6
+    hidden_size=90,
+    batch_size=batch_size,
+    output_size=8,  # TODO : 2
+    num_layers=4
 )
 loss_function = nn.NLLLoss()
 
-optimizer = optim.Adam(model.parameters(), lr = 0.001)
+optimizer = optim.Adam(model.parameters(), lr=0.001)
 
 train_on_gpu = torch.cuda.is_available()
 if train_on_gpu:
@@ -114,8 +115,8 @@ for epoch in range(num_epochs):
         model.zero_grad()
         # TODO:see notes
         X_local_minibatch, y_local_minibatch = (
-            train_X[i * batch_size : (i + 1) * batch_size,],
-            train_Y[i * batch_size : (i + 1) * batch_size,],
+            train_X[i * batch_size: (i + 1) * batch_size, ],
+            train_Y[i * batch_size: (i + 1) * batch_size, ],
         )
 
         X_local_minibatch = X_local_minibatch.permute(1, 0, 2)
@@ -145,8 +146,8 @@ for epoch in range(num_epochs):
             model.hidden = model.init_hidden()
             for i in range(num_dev_batches):
                 X_local_validation_minibatch, y_local_validation_minibatch = (
-                    dev_X[i * batch_size : (i + 1) * batch_size,],
-                    dev_Y[i * batch_size : (i + 1) * batch_size,],
+                    dev_X[i * batch_size: (i + 1) * batch_size, ],
+                    dev_Y[i * batch_size: (i + 1) * batch_size, ],
                 )
                 X_local_minibatch = X_local_validation_minibatch.permute(1, 0, 2)
                 y_local_minibatch = torch.max(y_local_validation_minibatch, 1)[1]
