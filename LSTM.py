@@ -175,4 +175,3 @@ for epoch in range(num_epochs):
         epoch_list.append(epoch)
         val_accuracy_list.append(val_acc / num_dev_batches)
         val_loss_list.append(val_running_loss / num_dev_batches)
-
