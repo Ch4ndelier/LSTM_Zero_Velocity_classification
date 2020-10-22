@@ -10,8 +10,8 @@ import matplotlib.pyplot as plt
 train_X_preprocessed_data = "./data_process/processed/TRAIN_X.npy"
 # train_Y_preprocessed_data = "./data/data_train_target.npy"
 train_Y_preprocessed_data = "./data_process/processed/TRAIN_Y.npy"
-dev_X_preprocessed_data = "./data_process/processed/dev_X.npy"
-dev_Y_preprocessed_data = "./data_process/processed/dev_Y.npy"
+dev_X_preprocessed_data = "./data_process/processed/DEV_X.npy"
+dev_Y_preprocessed_data = "./data_process/processed/DEV_Y.npy"
 test_X_preprocessed_data = "./data/data_test_input.npy"
 test_Y_preprocessed_data = "./data/data_test_target.npy"
 
@@ -20,8 +20,8 @@ if (
     and os.path.isfile(train_Y_preprocessed_data)
     and os.path.isfile(dev_X_preprocessed_data)
     and os.path.isfile(dev_Y_preprocessed_data)
-    and os.path.isfile(test_X_preprocessed_data)
-    and os.path.isfile(test_Y_preprocessed_data)
+   # and os.path.isfile(test_X_preprocessed_data)
+   # and os.path.isfile(test_Y_preprocessed_data)
 ):
     print("Preprocessed files exist, deserializing npy files")
     train_X = torch.from_numpy(np.load(train_X_preprocessed_data)).type(torch.Tensor)
