@@ -6,10 +6,12 @@ import torch.nn.functional as F
 import torch.optim as optim
 import matplotlib.pyplot as plt
 
-train_X_preprocessed_data = "./data/data_train_input.npy"
-train_Y_preprocessed_data = "./data/data_train_target.npy"
-dev_X_preprocessed_data = "./data/data_validation_input.npy"
-dev_Y_preprocessed_data = "./data/data_validation_target.npy"
+# train_X_preprocessed_data = "./data/data_train_input.npy"
+train_X_preprocessed_data = "./data_process/processed/TRAIN_X.npy"
+# train_Y_preprocessed_data = "./data/data_train_target.npy"
+train_Y_preprocessed_data = "./data_process/processed/TRAIN_Y.npy"
+dev_X_preprocessed_data = "./data_process/processed/dev_X.npy"
+dev_Y_preprocessed_data = "./data_process/processed/dev_Y.npy"
 test_X_preprocessed_data = "./data/data_test_input.npy"
 test_Y_preprocessed_data = "./data/data_test_target.npy"
 
@@ -27,7 +29,6 @@ if (
     print(train_X.type())
     print(np.load(train_X_preprocessed_data).shape)
     print(np.load(train_Y_preprocessed_data).shape)
-    exit()
     dev_X = torch.from_numpy(np.load(dev_X_preprocessed_data)).type(torch.Tensor)
     dev_Y = torch.from_numpy(np.load(dev_Y_preprocessed_data)).type(torch.Tensor)
 
@@ -76,16 +77,16 @@ class LSTM(torch.nn.Module):
         return accuracy.item()
 
 
-batch_size = 35
+batch_size = 16
 num_epochs = 20
 
 # Define model
 print("Build LSTM model ..")
 model = LSTM(
-    input_size=33,  # TODO : 6
+    input_size=6,  # TODO : 6
     hidden_size=90,
     batch_size=batch_size,
-    output_size=8,  # TODO : 2
+    output_size=2,  # TODO : 2
     num_layers=4
 )
 loss_function = nn.NLLLoss()

@@ -4,4 +4,10 @@ test.py
 
 test_lstm.py
 
-./data_process
+data_process/
+
+data/
+
+Dataset/
+
+gather_path.py
