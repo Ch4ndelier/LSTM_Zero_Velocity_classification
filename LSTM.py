@@ -6,6 +6,8 @@ import torch.nn.functional as F
 import torch.optim as optim
 import matplotlib.pyplot as plt
 
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
 # train_X_preprocessed_data = "./data/data_train_input.npy"
 train_X_preprocessed_data = "./data_process/processed/TRAIN_X.npy"
 # train_Y_preprocessed_data = "./data/data_train_target.npy"
@@ -24,13 +26,13 @@ if (
    # and os.path.isfile(test_Y_preprocessed_data)
 ):
     print("Preprocessed files exist, deserializing npy files")
-    train_X = torch.from_numpy(np.load(train_X_preprocessed_data)).type(torch.Tensor)
-    train_Y = torch.from_numpy(np.load(train_Y_preprocessed_data)).type(torch.Tensor)
+    train_X = torch.from_numpy(np.load(train_X_preprocessed_data)).type(torch.Tensor).to(device)
+    train_Y = torch.from_numpy(np.load(train_Y_preprocessed_data)).type(torch.Tensor).to(device)
     print(train_X.type())
     print(np.load(train_X_preprocessed_data).shape)
     print(np.load(train_Y_preprocessed_data).shape)
-    dev_X = torch.from_numpy(np.load(dev_X_preprocessed_data)).type(torch.Tensor)
-    dev_Y = torch.from_numpy(np.load(dev_Y_preprocessed_data)).type(torch.Tensor)
+    dev_X = torch.from_numpy(np.load(dev_X_preprocessed_data)).type(torch.Tensor).to(device)
+    dev_Y = torch.from_numpy(np.load(dev_Y_preprocessed_data)).type(torch.Tensor).to(device)
 
     test_X = torch.from_numpy(np.load(test_X_preprocessed_data)).type(torch.Tensor)
     test_Y = torch.from_numpy(np.load(test_Y_preprocessed_data)).type(torch.Tensor)
@@ -78,7 +80,7 @@ class LSTM(torch.nn.Module):
 
 
 batch_size = 16
-num_epochs = 20
+num_epochs = 400
 
 # Define model
 print("Build LSTM model ..")
@@ -89,6 +91,7 @@ model = LSTM(
     output_size=2,  # TODO : 2
     num_layers=4
 )
+model.to(device)
 loss_function = nn.NLLLoss()
 
 optimizer = optim.Adam(model.parameters(), lr=0.001)
