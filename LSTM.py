@@ -95,7 +95,7 @@ model = LSTM(
 model.to(device)
 loss_function = nn.NLLLoss()
 
-optimizer = optim.Adam(model.parameters(), lr=0.0008, weight_decay=0.001)
+optimizer = optim.Adam(model.parameters(), lr=0.0001, weight_decay=0.001)
 
 train_on_gpu = torch.cuda.is_available()
 if train_on_gpu:
