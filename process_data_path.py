@@ -34,9 +34,9 @@ def Process_data_get_numpy(imu_path, press_path):
 
     train_x = []
     train_y = []
-    for i in range(256, min(X_row, Y_row) - 10, 50):
+    for i in range(24, min(X_row, Y_row) - 32, 24):
         a_seq = []
-        for j in range(i - 256, i):
+        for j in range(i - 24, i):
             a_seq.append(imu_list[j])
         train_x.append(a_seq)
         train_y.append(press_label_list[i])
@@ -76,7 +76,14 @@ print(np.array(TRAIN_Y).shape)
 print(np.array(DEV_X).shape)
 print(np.array(DEV_Y).shape)
 
-np.save("./data_process/processed/TRAIN_X.npy", np.array(TRAIN_X))
-np.save("./data_process/processed/TRAIN_Y.npy", np.array(TRAIN_Y))
-np.save("./data_process/processed/DEV_X.npy", np.array(DEV_X))
-np.save("./data_process/processed/DEV_Y.npy", np.array(DEV_Y))
+dir_name = "./data_process/processed/int_24_len_24/"
+if os.path.exists(dir_name):
+    print("path already exists!!")
+    exit()
+else:
+    os.mkdir(dir_name)
+
+np.save(dir_name + "TRAIN_X_1.npy", np.array(TRAIN_X))
+np.save(dir_name + "TRAIN_Y_1.npy", np.array(TRAIN_Y))
+np.save(dir_name + "DEV_X_1.npy", np.array(DEV_X))
+np.save(dir_name + "DEV_Y_1.npy", np.array(DEV_Y))
