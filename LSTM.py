@@ -51,7 +51,8 @@ class LSTM(torch.nn.Module):
         self.lstm = torch.nn.LSTM(
             self.input_size,
             self.hidden_size,
-            self.num_layers
+            self.num_layers,
+            dropout=0.5
         )
         self.linear = torch.nn.Linear(self.hidden_size, output_size)
 
