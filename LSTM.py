@@ -89,7 +89,7 @@ model = LSTM(
     hidden_size=64,
     batch_size=batch_size,
     output_size=2,  # TODO : 2
-    num_layers=4
+    num_layers= 5
 )
 model.to(device)
 loss_function = nn.NLLLoss()
