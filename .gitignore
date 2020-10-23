@@ -9,5 +9,4 @@ data/
 data_process/
 Dataset/
 
-gather_path.py
 .vscode/
