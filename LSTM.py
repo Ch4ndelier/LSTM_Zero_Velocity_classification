@@ -87,15 +87,15 @@ num_epochs = 200
 print("Build LSTM model ..")
 model = LSTM(
     input_size=6,  # TODO : 6
-    hidden_size=64,
+    hidden_size=16,
     batch_size=batch_size,
     output_size=2,  # TODO : 2
-    num_layers=5
+    num_layers=3
 )
 model.to(device)
 loss_function = nn.NLLLoss()
 
-optimizer = optim.Adam(model.parameters(), lr=0.001)
+optimizer = optim.Adam(model.parameters(), lr=0.0008, weight_decay=0.001)
 
 train_on_gpu = torch.cuda.is_available()
 if train_on_gpu:
