@@ -86,7 +86,7 @@ num_epochs = 400
 print("Build LSTM model ..")
 model = LSTM(
     input_size=6,  # TODO : 6
-    hidden_size=90,
+    hidden_size=16,
     batch_size=batch_size,
     output_size=2,  # TODO : 2
     num_layers=4
@@ -124,7 +124,7 @@ for epoch in range(num_epochs):
         )
 
         X_local_minibatch = X_local_minibatch.permute(1, 0, 2)
-        y_local_minibatch = torch.max(y_local_minibatch, 1)[1]
+        y_local_minibatch = torch.max(y_local_minibatch, 1)[1] #返回每行最大值(gt)的索引
 
         y_pred = model(X_local_minibatch)                # fwd the bass (forward pass)
         loss = loss_function(y_pred, y_local_minibatch)  # compute loss
@@ -179,3 +179,17 @@ for epoch in range(num_epochs):
         epoch_list.append(epoch)
         val_accuracy_list.append(val_acc / num_dev_batches)
         val_loss_list.append(val_running_loss / num_dev_batches)
+
+plt.plot(epoch_list, val_loss_list)
+plt.xlabel("# of epochs")
+plt.ylabel("Loss")
+plt.title("LSTM: Loss vs # epochs")
+plt.savefig('graph.png')
+plt.show()
+
+plt.plot(epoch_list, val_accuracy_list, color="red")
+plt.xlabel("# of epochs")
+plt.ylabel("Accuracy")
+plt.title("LSTM: Accuracy vs # epochs")
+# plt.savefig('graph.png')
+plt.show()

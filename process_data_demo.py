@@ -26,7 +26,7 @@ elif X_row == max_row:
     imu = np.delete(imu, ignore_label, axis=0)
     print(np.size(imu))
 
-print('行数缩放至基本一致', np.size(imu, 0), np.size(press_label, 0))
+print('行数缩放至一致', np.size(imu, 0), np.size(press_label, 0))
 
 # TODO:numpy
 imu_list = imu.tolist()
