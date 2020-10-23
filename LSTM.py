@@ -79,14 +79,14 @@ class LSTM(torch.nn.Module):
         return accuracy.item()
 
 
-batch_size = 16
-num_epochs = 400
+batch_size = 35
+num_epochs = 200
 
 # Define model
 print("Build LSTM model ..")
 model = LSTM(
     input_size=6,  # TODO : 6
-    hidden_size=16,
+    hidden_size=64,
     batch_size=batch_size,
     output_size=2,  # TODO : 2
     num_layers=4
@@ -191,5 +191,5 @@ plt.plot(epoch_list, val_accuracy_list, color="red")
 plt.xlabel("# of epochs")
 plt.ylabel("Accuracy")
 plt.title("LSTM: Accuracy vs # epochs")
-# plt.savefig('graph.png')
+plt.savefig('graph_1.png')
 plt.show()
