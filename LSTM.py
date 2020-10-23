@@ -9,11 +9,11 @@ import matplotlib.pyplot as plt
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 # train_X_preprocessed_data = "./data/data_train_input.npy"
-train_X_preprocessed_data = "./data_process/processed/TRAIN_X.npy"
+train_X_preprocessed_data = "./data_process/int_24_len_24/TRAIN_X_1.npy"
 # train_Y_preprocessed_data = "./data/data_train_target.npy"
-train_Y_preprocessed_data = "./data_process/processed/TRAIN_Y.npy"
-dev_X_preprocessed_data = "./data_process/processed/DEV_X.npy"
-dev_Y_preprocessed_data = "./data_process/processed/DEV_Y.npy"
+train_Y_preprocessed_data = "./data_process/int_24_len_24/TRAIN_Y_1.npy"
+dev_X_preprocessed_data = "./data_process/int_24_len_24/DEV_X_1.npy"
+dev_Y_preprocessed_data = "./data_process/int_24_len_24/DEV_Y_1.npy"
 test_X_preprocessed_data = "./data/data_test_input.npy"
 test_Y_preprocessed_data = "./data/data_test_target.npy"
 
