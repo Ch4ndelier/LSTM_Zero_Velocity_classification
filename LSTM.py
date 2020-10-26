@@ -9,11 +9,11 @@ import matplotlib.pyplot as plt
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 # train_X_preprocessed_data = "./data/data_train_input.npy"
-train_X_preprocessed_data = "./data_process/int_24_len_24/TRAIN_X_1.npy"
+train_X_preprocessed_data = "./data_process/int_12_len_24_82/TRAIN_X_1.npy"
 # train_Y_preprocessed_data = "./data/data_train_target.npy"
-train_Y_preprocessed_data = "./data_process/int_24_len_24/TRAIN_Y_1.npy"
-dev_X_preprocessed_data = "./data_process/int_24_len_24/DEV_X_1.npy"
-dev_Y_preprocessed_data = "./data_process/int_24_len_24/DEV_Y_1.npy"
+train_Y_preprocessed_data = "./data_process/int_12_len_24_82/TRAIN_Y_1.npy"
+dev_X_preprocessed_data = "./data_process/int_12_len_24_82/DEV_X_1.npy"
+dev_Y_preprocessed_data = "./data_process/int_12_len_24_82/DEV_Y_1.npy"
 test_X_preprocessed_data = "./data/data_test_input.npy"
 test_Y_preprocessed_data = "./data/data_test_target.npy"
 
@@ -37,7 +37,8 @@ if (
     test_X = torch.from_numpy(np.load(test_X_preprocessed_data)).type(torch.Tensor)
     test_Y = torch.from_numpy(np.load(test_Y_preprocessed_data)).type(torch.Tensor)
 else:
-    print("raw audio files")
+    print("Loss of Data! Press make sure the path is right!")
+    exit()
 
 
 class LSTM(torch.nn.Module):
@@ -80,7 +81,7 @@ class LSTM(torch.nn.Module):
         return accuracy.item()
 
 
-batch_size = 35
+batch_size = 12
 num_epochs = 200
 
 # Define model
@@ -95,7 +96,7 @@ model = LSTM(
 model.to(device)
 loss_function = nn.NLLLoss()
 
-optimizer = optim.Adam(model.parameters(), lr=0.0001, weight_decay=0.001)
+optimizer = optim.Adam(model.parameters(), lr=0.0001, weight_decay=0.0001)
 
 train_on_gpu = torch.cuda.is_available()
 if train_on_gpu:

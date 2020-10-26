@@ -82,8 +82,7 @@ if os.path.exists(dir_name):
     exit()
 else:
     os.mkdir(dir_name)
-
-np.save(dir_name + "TRAIN_X_1.npy", np.array(TRAIN_X))
-np.save(dir_name + "TRAIN_Y_1.npy", np.array(TRAIN_Y))
-np.save(dir_name + "DEV_X_1.npy", np.array(DEV_X))
-np.save(dir_name + "DEV_Y_1.npy", np.array(DEV_Y))
+    np.save(dir_name + "TRAIN_X_1.npy", np.array(TRAIN_X))
+    np.save(dir_name + "TRAIN_Y_1.npy", np.array(TRAIN_Y))
+    np.save(dir_name + "DEV_X_1.npy", np.array(DEV_X))
+    np.save(dir_name + "DEV_Y_1.npy", np.array(DEV_Y))
