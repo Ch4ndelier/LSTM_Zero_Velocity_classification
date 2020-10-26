@@ -34,7 +34,7 @@ def Process_data_get_numpy(imu_path, press_path):
 
     train_x = []
     train_y = []
-    for i in range(24, min(X_row, Y_row) - 32, 24):
+    for i in range(24, min(X_row, Y_row) - 12, 12):
         a_seq = []
         for j in range(i - 24, i):
             a_seq.append(imu_list[j])
@@ -62,7 +62,7 @@ for data_path in data_path_list:
     np_list = Process_data_get_numpy(data_path[0], data_path[1])
     ALL_X.extend(np_list[0].tolist())
     ALL_Y.extend(np_list[1].tolist())
-    if i < N * 0.7:
+    if i < N * 0.8:
         TRAIN_X.extend(np_list[0].tolist())
         TRAIN_Y.extend(np_list[1].tolist())
     else:
@@ -76,7 +76,7 @@ print(np.array(TRAIN_Y).shape)
 print(np.array(DEV_X).shape)
 print(np.array(DEV_Y).shape)
 
-dir_name = "./data_process/processed/int_24_len_24/"
+dir_name = "./data_process/int_12_len_24_82/"
 if os.path.exists(dir_name):
     print("path already exists!!")
     exit()
