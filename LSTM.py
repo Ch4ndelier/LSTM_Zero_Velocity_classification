@@ -81,7 +81,7 @@ class LSTM(torch.nn.Module):
         return accuracy.item()
 
 
-batch_size = 12
+batch_size = 32
 num_epochs = 200
 
 # Define model
@@ -96,8 +96,9 @@ model = LSTM(
 model.to(device)
 loss_function = nn.NLLLoss()
 
-optimizer = optim.Adam(model.parameters(), lr=0.0001, weight_decay=0.0001)
-
+initial_lr = 0.0001
+optimizer = optim.Adam(model.parameters(), lr = initial_lr, weight_decay=0.0001)
+scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=32)
 train_on_gpu = torch.cuda.is_available()
 if train_on_gpu:
     print("\n Training on GPU")
@@ -110,7 +111,7 @@ num_dev_batches = int(dev_X.shape[0] / batch_size)
 val_loss_list, val_accuracy_list, epoch_list = [], [], []
 
 print("Training ...")
-
+print("learning rate: ", optimizer.defaults['lr'])
 for epoch in range(num_epochs):
 
     train_running_loss, train_acc = 0.0, 0.0
@@ -132,17 +133,18 @@ for epoch in range(num_epochs):
         loss = loss_function(y_pred, y_local_minibatch)  # compute loss
         loss.backward()                                  # reeeeewind (backward pass)
         optimizer.step()                                 # parameter update
-
         train_running_loss += loss.detach().item()       # unpacks the tensor into a scalar value
         train_acc += model.get_accuracy(y_pred, y_local_minibatch)
 
+    print("learning rate: ", optimizer.param_groups[0]['lr'])
+    scheduler.step()
     print(
         "Epoch:  %d | NLLoss: %.4f | Train Accuracy: %.2f"
         % (epoch, train_running_loss / num_batches, train_acc / num_batches)
     )
 
     print("Validation ...")  # should this be done every N epochs
-    if epoch % 10 == 0:
+    if epoch % 2 == 0:
         val_running_loss, val_acc = 0.0, 0.0
 
         # Compute validation loss, accuracy. Use torch.no_grad() & model.eval()

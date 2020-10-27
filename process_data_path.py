@@ -50,12 +50,7 @@ with open(IMU_PRESS_PATH, 'r+', encoding='utf-8') as f:
         # print(line[:-1].split('$'))
         data_path_list.append(line[:-1].split('$'))
 
-ALL_X = []
-ALL_Y = []
-TRAIN_X = []
-TRAIN_Y = []
-DEV_X = []
-DEV_Y = []
+ALL_X, ALL_Y, TRAIN_X, TRAIN_Y, DEV_X, DEV_Y = [], [], [], [], [], []
 N = len(data_path_list)
 i = 0
 for data_path in data_path_list:
@@ -69,10 +64,13 @@ for data_path in data_path_list:
         DEV_X.extend(np_list[0].tolist())
         DEV_Y.extend(np_list[1].tolist())
     i += 1
+print("All data shape:")
 print(np.array(ALL_X).shape)
 print(np.array(ALL_Y).shape)
+print("Train data shape:")
 print(np.array(TRAIN_X).shape)
 print(np.array(TRAIN_Y).shape)
+print("Val data shape:")
 print(np.array(DEV_X).shape)
 print(np.array(DEV_Y).shape)
 
