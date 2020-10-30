@@ -16,4 +16,4 @@ We suggest you run
 
 # Scripts
 
-* process_data_path.py:Generates the data used in LSTM training
+* process_data_path.py: Generates the data used in LSTM training
