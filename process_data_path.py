@@ -1,7 +1,7 @@
 import numpy as np
 import os
 
-IMU_PRESS_PATH = './Dataset/paths.txt'
+IMU_PRESS_PATH = './Dataset/ori_paths.txt'
 
 
 def Process_data_get_numpy(imu_path, press_path):
@@ -34,7 +34,7 @@ def Process_data_get_numpy(imu_path, press_path):
 
     train_x = []
     train_y = []
-    for i in range(24, min(X_row, Y_row) - 12, 12):
+    for i in range(24, min(len(imu_list), len(press_label_list)), 6):
         a_seq = []
         for j in range(i - 24, i):
             a_seq.append(imu_list[j])
@@ -54,10 +54,11 @@ ALL_X, ALL_Y, TRAIN_X, TRAIN_Y, DEV_X, DEV_Y = [], [], [], [], [], []
 N = len(data_path_list)
 i = 0
 for data_path in data_path_list:
+    print(data_path)
     np_list = Process_data_get_numpy(data_path[0], data_path[1])
     ALL_X.extend(np_list[0].tolist())
     ALL_Y.extend(np_list[1].tolist())
-    if i < N * 0.8:
+    if i < N * 0.9:
         TRAIN_X.extend(np_list[0].tolist())
         TRAIN_Y.extend(np_list[1].tolist())
     else:
@@ -74,7 +75,7 @@ print("Val data shape:")
 print(np.array(DEV_X).shape)
 print(np.array(DEV_Y).shape)
 
-dir_name = "./data_process/int_12_len_24_82/"
+dir_name = "./data_process/int_6_len_24_91/"
 if os.path.exists(dir_name):
     print("path already exists!!")
     exit()
