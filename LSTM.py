@@ -7,13 +7,13 @@ import torch.optim as optim
 import matplotlib.pyplot as plt
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-
+DATA_DIR = "./data_process/int_1_len_24_91"
 # train_X_preprocessed_data = "./data/data_train_input.npy"
-train_X_preprocessed_data = "./data_process/int_12_len_24_82/TRAIN_X_1.npy"
+train_X_preprocessed_data = os.path.join(DATA_DIR, "TRAIN_X_1.npy")
 # train_Y_preprocessed_data = "./data/data_train_target.npy"
-train_Y_preprocessed_data = "./data_process/int_12_len_24_82/TRAIN_Y_1.npy"
-dev_X_preprocessed_data = "./data_process/int_12_len_24_82/DEV_X_1.npy"
-dev_Y_preprocessed_data = "./data_process/int_12_len_24_82/DEV_Y_1.npy"
+train_Y_preprocessed_data = os.path.join(DATA_DIR, "TRAIN_Y_1.npy")
+dev_X_preprocessed_data = os.path.join(DATA_DIR, "DEV_X_1.npy")
+dev_Y_preprocessed_data = os.path.join(DATA_DIR, "DEV_Y_1.npy")
 test_X_preprocessed_data = "./data/data_test_input.npy"
 test_Y_preprocessed_data = "./data/data_test_target.npy"
 
@@ -42,7 +42,7 @@ else:
 
 
 class LSTM(torch.nn.Module):
-    def __init__(self, input_size, hidden_size, batch_size, output_size=8, num_layers=4):
+    def __init__(self, input_size, hidden_size, batch_size, output_size=2, num_layers=3):
         super(LSTM, self).__init__()
         self.input_size = input_size
         self.hidden_size = hidden_size
@@ -81,8 +81,8 @@ class LSTM(torch.nn.Module):
         return accuracy.item()
 
 
-batch_size = 32
-num_epochs = 200
+batch_size = 256
+num_epochs = 10
 
 # Define model
 print("Build LSTM model ..")
@@ -183,6 +183,8 @@ for epoch in range(num_epochs):
         epoch_list.append(epoch)
         val_accuracy_list.append(val_acc / num_dev_batches)
         val_loss_list.append(val_running_loss / num_dev_batches)
+
+torch.save(model, "./model/tt")
 
 plt.plot(epoch_list, val_loss_list)
 plt.xlabel("# of epochs")
