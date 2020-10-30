@@ -2,7 +2,8 @@ import numpy as np
 import os
 
 IMU_PRESS_PATH = './Dataset/ori_paths.txt'
-
+LENGTH = 24
+INTERVAL = 6
 
 def Process_data_get_numpy(imu_path, press_path):
     imu = np.loadtxt(imu_path, usecols=(2, 3, 4, 5, 6, 7))
@@ -34,9 +35,9 @@ def Process_data_get_numpy(imu_path, press_path):
 
     train_x = []
     train_y = []
-    for i in range(24, min(len(imu_list), len(press_label_list)), 6):
+    for i in range(LENGTH, min(len(imu_list), len(press_label_list)), INTERVAL):
         a_seq = []
-        for j in range(i - 24, i):
+        for j in range(i - LENGTH, i):
             a_seq.append(imu_list[j])
         train_x.append(a_seq)
         train_y.append(press_label_list[i])
