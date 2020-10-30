@@ -4,16 +4,16 @@ this is project to classify zero-velocity status.
 
 to be finished
 
-# To get processed data
+## To get processed data
 
 链接: https://pan.baidu.com/s/1Y34pvkNCPHtdKRNps1niIA  密码: juok
 
-# To start
+## To start
 
 We suggest you run 
 
 `pip install -r requirements.txt`
 
-# Scripts
+## Scripts
 
 * `process_data_path.py`: Generates the data used in LSTM training
