@@ -12,11 +12,8 @@ to be finished
 
 We suggest you run 
 
-```
-pip install -r requirements.txt
-```
+`pip install -r requirements.txt`
 
 # Scripts
 
-* > process_data_path.py: 
-Generates the data used in LSTM training
+* `process_data_path.py`: Generates the data used in LSTM training
