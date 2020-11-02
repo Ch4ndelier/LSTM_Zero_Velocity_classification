@@ -3,7 +3,7 @@ import os
 
 IMU_PRESS_PATH = './Dataset/ori_paths.txt'
 LENGTH = 24
-INTERVAL = 6
+INTERVAL = 12
 
 def Process_data_get_numpy(imu_path, press_path):
     imu = np.loadtxt(imu_path, usecols=(2, 3, 4, 5, 6, 7))
@@ -44,6 +44,55 @@ def Process_data_get_numpy(imu_path, press_path):
 
     return [np.array(train_x), np.array(train_y)]
 
+# up sampling
+def Process_data_get_numpy_upsample(imu_path, press_path):
+    imu = np.loadtxt(imu_path, usecols=(2, 3, 4, 5, 6, 7))
+    press_label = np.loadtxt(press_path)
+    X_row = np.size(imu, 0)
+    Y_row = np.size(press_label, 0)
+    max_row = max(X_row, Y_row)
+    if Y_row == max_row:
+        dis = max_row - X_row
+        inter = X_row // dis
+        _iter = X_row
+        cnt = 0
+        while _iter:
+            cnt += 1
+            if cnt == inter:
+                to_insert = imu[_iter - 1]
+                np.insert(imu, _iter, to_insert, axis=0)
+                cnt = 0
+            _iter -= 1
+    elif X_row == max_row:
+        dis = max_row - Y_row
+        inter = Y_row // dis
+        _iter = Y_row
+        cnt = 0
+        while _iter:
+            cnt += 1
+            if cnt == inter:
+                to_insert = imu[_iter - 1]
+                np.insert(press_label, _iter, to_insert, axis=0)
+            _iter -= 1
+
+    imu_list = imu.tolist()
+    press_label_list = press_label.tolist()
+    for i in range(len(press_label_list)):
+        if press_label_list[i] == 0:
+            press_label_list[i] = [0, 1]
+        else:
+            press_label_list[i] = [1, 0]
+
+    train_x = []
+    train_y = []
+    for i in range(LENGTH, min(len(imu_list), len(press_label_list)), INTERVAL):
+        a_seq = []
+        for j in range(i - LENGTH, i):
+            a_seq.append(imu_list[j])
+        train_x.append(a_seq)
+        train_y.append(press_label_list[i])
+    print(np.array(train_x).shape, np.array(train_y).shape)
+    return [np.array(train_x), np.array(train_y)]
 
 data_path_list = []
 with open(IMU_PRESS_PATH, 'r+', encoding='utf-8') as f:
@@ -55,8 +104,8 @@ ALL_X, ALL_Y, TRAIN_X, TRAIN_Y, DEV_X, DEV_Y = [], [], [], [], [], []
 N = len(data_path_list)
 i = 0
 for data_path in data_path_list:
-    print(data_path)
-    np_list = Process_data_get_numpy(data_path[0], data_path[1])
+    # print(data_path)
+    np_list = Process_data_get_numpy_upsample(data_path[0], data_path[1])
     ALL_X.extend(np_list[0].tolist())
     ALL_Y.extend(np_list[1].tolist())
     if i < N * 0.9:
@@ -76,7 +125,7 @@ print("Val data shape:")
 print(np.array(DEV_X).shape)
 print(np.array(DEV_Y).shape)
 
-dir_name = "./data_process/int_6_len_24_91/"
+dir_name = "./data_process/int_6_len_24_91_up/"
 if os.path.exists(dir_name):
     print("path already exists!!")
     exit()
