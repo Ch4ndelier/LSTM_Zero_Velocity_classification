@@ -3,7 +3,7 @@ import os
 
 IMU_PRESS_PATH = './Dataset/ori_paths.txt'
 LENGTH = 24
-INTERVAL = 12
+INTERVAL = 6
 
 def Process_data_get_numpy(imu_path, press_path):
     imu = np.loadtxt(imu_path, usecols=(2, 3, 4, 5, 6, 7))
@@ -46,23 +46,29 @@ def Process_data_get_numpy(imu_path, press_path):
 
 # up sampling
 def Process_data_get_numpy_upsample(imu_path, press_path):
+    # print("upsample")
     imu = np.loadtxt(imu_path, usecols=(2, 3, 4, 5, 6, 7))
     press_label = np.loadtxt(press_path)
     X_row = np.size(imu, 0)
     Y_row = np.size(press_label, 0)
+    # print(X_row, Y_row)
     max_row = max(X_row, Y_row)
     if Y_row == max_row:
         dis = max_row - X_row
         inter = X_row // dis
         _iter = X_row
         cnt = 0
+        # print("interval", inter)
         while _iter:
             cnt += 1
             if cnt == inter:
-                to_insert = imu[_iter - 1]
-                np.insert(imu, _iter, to_insert, axis=0)
+                to_insert = imu[_iter - 1, ...]
+                # print(to_insert, cnt)
+                imu = np.insert(imu, _iter, to_insert, axis=0)
+                # print("size: ", np.size(imu, 0))
                 cnt = 0
             _iter -= 1
+        # print(np.size(imu, 0), np.size(press_label))
     elif X_row == max_row:
         dis = max_row - Y_row
         inter = Y_row // dis
@@ -71,8 +77,9 @@ def Process_data_get_numpy_upsample(imu_path, press_path):
         while _iter:
             cnt += 1
             if cnt == inter:
-                to_insert = imu[_iter - 1]
-                np.insert(press_label, _iter, to_insert, axis=0)
+                to_insert = press_label[_iter - 1]
+                press_label = np.insert(press_label, _iter, to_insert, axis=0)
+                cnt = 0
             _iter -= 1
 
     imu_list = imu.tolist()
@@ -91,7 +98,7 @@ def Process_data_get_numpy_upsample(imu_path, press_path):
             a_seq.append(imu_list[j])
         train_x.append(a_seq)
         train_y.append(press_label_list[i])
-    print(np.array(train_x).shape, np.array(train_y).shape)
+    # print(np.array(train_x).shape, np.array(train_y).shape)
     return [np.array(train_x), np.array(train_y)]
 
 data_path_list = []
