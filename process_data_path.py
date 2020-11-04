@@ -3,7 +3,7 @@ import os
 
 IMU_PRESS_PATH = './Dataset/ori_paths.txt'
 LENGTH = 24
-INTERVAL = 6
+INTERVAL = 1
 
 def Process_data_get_numpy(imu_path, press_path):
     imu = np.loadtxt(imu_path, usecols=(2, 3, 4, 5, 6, 7))
@@ -62,8 +62,10 @@ def Process_data_get_numpy_upsample(imu_path, press_path):
         while _iter:
             cnt += 1
             if cnt == inter:
-                to_insert = imu[_iter - 1, ...]
-                # print(to_insert, cnt)
+                to_insert_former = imu[_iter - 1]
+                to_insert_later = imu[_iter]
+                to_insert = [(to_insert_former[i] + to_insert_later[i]) / 2 for i in range(len(to_insert_former))]
+                to_insert = np.array(to_insert)
                 imu = np.insert(imu, _iter, to_insert, axis=0)
                 # print("size: ", np.size(imu, 0))
                 cnt = 0
@@ -77,7 +79,9 @@ def Process_data_get_numpy_upsample(imu_path, press_path):
         while _iter:
             cnt += 1
             if cnt == inter:
-                to_insert = press_label[_iter - 1]
+                to_insert_former = press_label[_iter - 1]
+                to_insert_later = press_label[_iter]
+                to_insert = [(to_insert_former[i] + to_insert_later[i]) / 2 for i in range(len(to_insert_former))]
                 press_label = np.insert(press_label, _iter, to_insert, axis=0)
                 cnt = 0
             _iter -= 1
@@ -98,7 +102,7 @@ def Process_data_get_numpy_upsample(imu_path, press_path):
             a_seq.append(imu_list[j])
         train_x.append(a_seq)
         train_y.append(press_label_list[i])
-    # print(np.array(train_x).shape, np.array(train_y).shape)
+    print(np.array(train_x).shape, np.array(train_y).shape)
     return [np.array(train_x), np.array(train_y)]
 
 data_path_list = []
@@ -132,7 +136,7 @@ print("Val data shape:")
 print(np.array(DEV_X).shape)
 print(np.array(DEV_Y).shape)
 
-dir_name = "./data_process/int_6_len_24_91_up/"
+dir_name = "./data_process/int_1_len_24_91_up/"
 if os.path.exists(dir_name):
     print("path already exists!!")
     exit()
