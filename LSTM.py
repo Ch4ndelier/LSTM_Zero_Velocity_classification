@@ -7,7 +7,7 @@ import torch.optim as optim
 import matplotlib.pyplot as plt
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-DATA_DIR = "./data_process/int_1_len_24_91"
+DATA_DIR = "./data_process/int_6_len_24_91_up"
 # train_X_preprocessed_data = "./data/data_train_input.npy"
 train_X_preprocessed_data = os.path.join(DATA_DIR, "TRAIN_X_1.npy")
 # train_Y_preprocessed_data = "./data/data_train_target.npy"
@@ -53,7 +53,7 @@ class LSTM(torch.nn.Module):
             self.input_size,
             self.hidden_size,
             self.num_layers,
-            dropout=0.5
+            # dropout=0.5
         )
         self.linear = torch.nn.Linear(self.hidden_size, output_size)
 
@@ -82,23 +82,23 @@ class LSTM(torch.nn.Module):
 
 
 batch_size = 256
-num_epochs = 10
+num_epochs = 300
 
 # Define model
 print("Build LSTM model ..")
 model = LSTM(
     input_size=6,  # TODO : 6
-    hidden_size=16,
+    hidden_size=12,
     batch_size=batch_size,
     output_size=2,  # TODO : 2
-    num_layers=3
+    num_layers=2
 )
 model.to(device)
 loss_function = nn.NLLLoss()
-
-initial_lr = 0.0001
-optimizer = optim.Adam(model.parameters(), lr = initial_lr, weight_decay=0.0001)
-scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=32)
+val_acc = 0.0
+initial_lr = 0.0002
+optimizer = optim.Adam(model.parameters(), lr = initial_lr)
+scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=[20, 120, 160, 200], gamma=0.8) # scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=32)
 train_on_gpu = torch.cuda.is_available()
 if train_on_gpu:
     print("\n Training on GPU")
@@ -144,7 +144,7 @@ for epoch in range(num_epochs):
     )
 
     print("Validation ...")  # should this be done every N epochs
-    if epoch % 2 == 0:
+    if epoch % 5 == 0:
         val_running_loss, val_acc = 0.0, 0.0
 
         # Compute validation loss, accuracy. Use torch.no_grad() & model.eval()
@@ -184,8 +184,7 @@ for epoch in range(num_epochs):
         val_accuracy_list.append(val_acc / num_dev_batches)
         val_loss_list.append(val_running_loss / num_dev_batches)
 
-torch.save(model, "./model/tt")
-
+# torch.save(model, "./model/tt")
 plt.plot(epoch_list, val_loss_list)
 plt.xlabel("# of epochs")
 plt.ylabel("Loss")
@@ -198,4 +197,6 @@ plt.xlabel("# of epochs")
 plt.ylabel("Accuracy")
 plt.title("LSTM: Accuracy vs # epochs")
 plt.savefig('graph_1.png')
-plt.show()
+plt.show() 
+
+print("max val accuracy: ", max(val_acc))
