@@ -5,12 +5,12 @@ test.py
 test_lstm.py
 
 data/
-
+__pycache__/
 data_process/
 Dataset/
-
+utils/__pycache__
 .vscode/
-
+config.py
 graph_1.png
 
 graph.png

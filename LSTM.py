@@ -5,41 +5,12 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 import matplotlib.pyplot as plt
+import config
+from utils import dataloader
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-DATA_DIR = "./data_process/int_6_len_24_91_up"
-# train_X_preprocessed_data = "./data/data_train_input.npy"
-train_X_preprocessed_data = os.path.join(DATA_DIR, "TRAIN_X_1.npy")
-# train_Y_preprocessed_data = "./data/data_train_target.npy"
-train_Y_preprocessed_data = os.path.join(DATA_DIR, "TRAIN_Y_1.npy")
-dev_X_preprocessed_data = os.path.join(DATA_DIR, "DEV_X_1.npy")
-dev_Y_preprocessed_data = os.path.join(DATA_DIR, "DEV_Y_1.npy")
-test_X_preprocessed_data = "./data/data_test_input.npy"
-test_Y_preprocessed_data = "./data/data_test_target.npy"
-
-if (
-    os.path.isfile(train_X_preprocessed_data)
-    and os.path.isfile(train_Y_preprocessed_data)
-    and os.path.isfile(dev_X_preprocessed_data)
-    and os.path.isfile(dev_Y_preprocessed_data)
-   # and os.path.isfile(test_X_preprocessed_data)
-   # and os.path.isfile(test_Y_preprocessed_data)
-):
-    print("Preprocessed files exist, deserializing npy files")
-    train_X = torch.from_numpy(np.load(train_X_preprocessed_data)).type(torch.Tensor).to(device)
-    train_Y = torch.from_numpy(np.load(train_Y_preprocessed_data)).type(torch.Tensor).to(device)
-    print(train_X.type())
-    print(np.load(train_X_preprocessed_data).shape)
-    print(np.load(train_Y_preprocessed_data).shape)
-    dev_X = torch.from_numpy(np.load(dev_X_preprocessed_data)).type(torch.Tensor).to(device)
-    dev_Y = torch.from_numpy(np.load(dev_Y_preprocessed_data)).type(torch.Tensor).to(device)
-
-    test_X = torch.from_numpy(np.load(test_X_preprocessed_data)).type(torch.Tensor)
-    test_Y = torch.from_numpy(np.load(test_Y_preprocessed_data)).type(torch.Tensor)
-else:
-    print("Loss of Data! Press make sure the path is right!")
-    exit()
-
+DATA_DIR = config.DATA_DIR
+train_X, train_Y, dev_X, dev_Y = dataloader.load_data(DATA_DIR)
 
 class LSTM(torch.nn.Module):
     def __init__(self, input_size, hidden_size, batch_size, output_size=2, num_layers=3):
@@ -65,8 +36,6 @@ class LSTM(torch.nn.Module):
 
     def forward(self, input):
         # 输入input x:(seq_len, batch, input_size)
-        # seq_len:句长，这里不可能为1,论文有问题
-        # batch:一次传入数据的量
         # input_size:单词向量长度，即输入量长度
         lstm_out, hidden = self.lstm(input)
         logits = self.linear(lstm_out[-1])
@@ -81,24 +50,27 @@ class LSTM(torch.nn.Module):
         return accuracy.item()
 
 
-batch_size = 256
-num_epochs = 300
+batch_size = config.BATCH_SIZE
+num_epochs = config.NUM_EPOCHS
+initial_lr = config.LR
+hidden_size = config.HIDDEN_SIZE
+num_layers = config.NUM_LAYERS
 
 # Define model
 print("Build LSTM model ..")
 model = LSTM(
     input_size=6,  # TODO : 6
-    hidden_size=12,
+    hidden_size=hidden_size,
     batch_size=batch_size,
     output_size=2,  # TODO : 2
-    num_layers=2
+    num_layers=num_layers
 )
 model.to(device)
 loss_function = nn.NLLLoss()
 val_acc = 0.0
-initial_lr = 0.0002
 optimizer = optim.Adam(model.parameters(), lr = initial_lr)
-scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=[20, 120, 160, 200], gamma=0.8) # scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=32)
+scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=[20, 120, 160, 200], gamma=0.8) 
+# scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=32)
 train_on_gpu = torch.cuda.is_available()
 if train_on_gpu:
     print("\n Training on GPU")
