@@ -1,8 +1,5 @@
 import torch
-import os
-import numpy as np
 import torch.nn as nn
-import torch.nn.functional as F
 import torch.optim as optim
 import matplotlib.pyplot as plt
 import config
@@ -32,8 +29,8 @@ model = LSTM(
 model.to(device)
 loss_function = nn.NLLLoss()
 val_acc = 0.0
-optimizer = optim.Adam(model.parameters(), lr = initial_lr)
-scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=[20, 120, 160, 200], gamma=0.8) 
+optimizer = optim.Adam(model.parameters(), lr=initial_lr)
+scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=[20, 120, 160, 200], gamma=0.8)
 # scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=32)
 train_on_gpu = torch.cuda.is_available()
 if train_on_gpu:
@@ -63,7 +60,7 @@ for epoch in range(num_epochs):
         )
 
         X_local_minibatch = X_local_minibatch.permute(1, 0, 2)
-        y_local_minibatch = torch.max(y_local_minibatch, 1)[1] #返回每行最大值(gt)的索引
+        y_local_minibatch = torch.max(y_local_minibatch, 1)[1] # 返回每行最大值(gt)的索引
 
         y_pred = model(X_local_minibatch)                # fwd the bass (forward pass)
         loss = loss_function(y_pred, y_local_minibatch)  # compute loss
@@ -133,6 +130,6 @@ plt.xlabel("# of epochs")
 plt.ylabel("Accuracy")
 plt.title("LSTM: Accuracy vs # epochs")
 plt.savefig('graph_1.png')
-plt.show() 
+plt.show()
 
 # print("max val accuracy: ", max(val_acc))

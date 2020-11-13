@@ -5,6 +5,7 @@ IMU_PRESS_PATH = './Dataset/ori_paths.txt'
 LENGTH = 24
 INTERVAL = 1
 
+
 def Process_data_get_numpy(imu_path, press_path):
     imu = np.loadtxt(imu_path, usecols=(2, 3, 4, 5, 6, 7))
     press_label = np.loadtxt(press_path)
@@ -43,6 +44,7 @@ def Process_data_get_numpy(imu_path, press_path):
         train_y.append(press_label_list[i])
 
     return [np.array(train_x), np.array(train_y)]
+
 
 # up sampling
 def Process_data_get_numpy_upsample(imu_path, press_path):

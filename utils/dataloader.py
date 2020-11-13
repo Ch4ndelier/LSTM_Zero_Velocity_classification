@@ -3,14 +3,16 @@ import os
 import numpy as np
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
+
 def load_data(DATA_DIR):
     train_X_preprocessed_data = os.path.join(DATA_DIR, "TRAIN_X_1.npy")
     # train_Y_preprocessed_data = "./data/data_train_target.npy"
     train_Y_preprocessed_data = os.path.join(DATA_DIR, "TRAIN_Y_1.npy")
     dev_X_preprocessed_data = os.path.join(DATA_DIR, "DEV_X_1.npy")
     dev_Y_preprocessed_data = os.path.join(DATA_DIR, "DEV_Y_1.npy")
-    test_X_preprocessed_data = "./data/data_test_input.npy"
-    test_Y_preprocessed_data = "./data/data_test_target.npy"
+    # test_X_preprocessed_data = "./data/data_test_input.npy"
+    # test_Y_preprocessed_data = "./data/data_test_target.npy"
 
     if (
         os.path.isfile(train_X_preprocessed_data)
