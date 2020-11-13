@@ -23,6 +23,12 @@ NUM_EPOCHS = 300
 HIDDEN_SIZE = 12
 NUM_LAYERS = 2
 ```
+
+you may write your own config.py to adjust the hyperparameters or use different data
 ## Scripts
 
 * `process_data_path.py`: Generates the data used in LSTM training
+
+* `train_lstm.py`: Train the LSTM network
+
+* `model_test.py`: Test the trained model
