@@ -6,7 +6,7 @@ to be finished
 
 ## To get processed data
 
-链接: https://pan.baidu.com/s/1Y34pvkNCPHtdKRNps1niIA  密码: juok
+Link: https://pan.baidu.com/s/1Y34pvkNCPHtdKRNps1niIA   Password: juok
 
 ## To start
 
