@@ -14,6 +14,15 @@ We suggest you run
 
 `pip install -r requirements.txt`
 
+Here is an example of config.py:
+```
+LR = 0.0003
+DATA_DIR = "./data_process/int_1_len_24_91_up"
+BATCH_SIZE = 600
+NUM_EPOCHS = 300
+HIDDEN_SIZE = 12
+NUM_LAYERS = 2
+```
 ## Scripts
 
 * `process_data_path.py`: Generates the data used in LSTM training

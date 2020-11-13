@@ -4,10 +4,12 @@ import numpy as np
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
+from LSTM import LSTM
+
 
 DATA_DIR = "./data_process/int_1_len_24_91"
 MODEL_PATH = './model/tt'
-
+'''
 class LSTM(torch.nn.Module):
     def __init__(self, input_size, hidden_size, batch_size, output_size=2, num_layers=3):
         super(LSTM, self).__init__()
@@ -20,7 +22,7 @@ class LSTM(torch.nn.Module):
             self.input_size,
             self.hidden_size,
             self.num_layers,
-            dropout=0.5
+            # dropout=0.5
         )
         self.linear = torch.nn.Linear(self.hidden_size, output_size)
 
@@ -47,6 +49,7 @@ class LSTM(torch.nn.Module):
         print(corrects)
         accuracy = 100.0 * corrects / len(target)
         return accuracy.item()
+'''
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 dev_X_preprocessed_data = os.path.join(DATA_DIR, "DEV_X_1.npy")
@@ -57,6 +60,7 @@ dev_Y = torch.from_numpy(np.load(dev_Y_preprocessed_data)).type(torch.Tensor).to
 
 model = torch.load(MODEL_PATH)
 model.eval()
+
 '''
 X_local_validation_minibatch, y_local_validation_minibatch = (
     dev_X[i * batch_size: (i + 1) * batch_size, ],
@@ -64,10 +68,10 @@ X_local_validation_minibatch, y_local_validation_minibatch = (
 )
 '''
 
-def get_accuracy(logits, target):
+def test_get_accuracy(logits, target):
     out_index = torch.max(logits.cpu().data, 1)[1].numpy()
     prob = torch.max(logits.cpu().data, 1)[0].numpy()
-    out_index[np.where(prob < 0.85)] = 0
+    # out_index[np.where(prob < 0.85)] = 0
     cor = torch.from_numpy(out_index)
     target = target.cpu()
     corrects = (
