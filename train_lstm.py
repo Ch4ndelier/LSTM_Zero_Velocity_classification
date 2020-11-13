@@ -133,3 +133,4 @@ plt.savefig('graph_1.png')
 plt.show()
 
 # print("max val accuracy: ", max(val_acc))
+# torch.save(model, './model/test.pkl')
