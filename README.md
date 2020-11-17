@@ -32,3 +32,5 @@ you may write your own config.py to adjust the hyperparameters or use different 
 * `train_lstm.py`: Train the LSTM network
 
 * `model_test.py`: Test the trained model
+
+* `data_alignment.py`: To align the data
