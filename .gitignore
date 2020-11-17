@@ -1,9 +1,9 @@
 .DS_Store
 
 test.py
-
+test.txt
 test_lstm.py
-
+Dataset_ori
 data/
 __pycache__/
 data_process/
