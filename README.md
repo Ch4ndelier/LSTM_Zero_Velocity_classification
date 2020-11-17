@@ -1,6 +1,6 @@
 # LSTM_Zero_Velocity_classification
 
-This is project to classify zero-velocity status using accelerometer and gyroscope. 
+This is project to classify zero-velocity status using the data from accelerometer and gyroscope. 
 
 
 ## To get processed data
