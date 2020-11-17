@@ -1,8 +1,7 @@
 # LSTM_Zero_Velocity_classification
 
-this is project to classify zero-velocity status.
+This is project to classify zero-velocity status using accelerometer and gyroscope. 
 
-to be finished
 
 ## To get processed data
 
@@ -14,6 +13,8 @@ We suggest you run
 
 `pip install -r requirements.txt`
 
+`config.py` contains the parameters used in training.You should write your own config.py and put it in the root directory.
+
 Here is an example of config.py:
 ```
 LR = 0.0003
@@ -24,13 +25,13 @@ HIDDEN_SIZE = 12
 NUM_LAYERS = 2
 ```
 
-you may write your own config.py to adjust the hyperparameters or use different data
+You may write your own config.py to try different hyperparameters or use different data.
 ## Scripts
 
-* `process_data_path.py`: Generates the data used in LSTM training
+* `process_data_path.py`: Generates the data used in LSTM training.
 
-* `train_lstm.py`: Train the LSTM network
+* `train_lstm.py`: Train the LSTM network.
 
-* `model_test.py`: Test the trained model
+* `model_test.py`: Test the trained model which is saved as "name_you_decide.pkl"
 
-* `data_alignment.py`: To align the data
+* `data_alignment.py`: To align the data (Our data has lots of problems, we suggest you use the data downloaded from Mega, if you need the original data, please contact us by email: ljyuan@bupt.edu.cn).
