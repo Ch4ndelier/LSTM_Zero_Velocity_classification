@@ -1,9 +1,10 @@
+from __future__ import division
 import numpy as np
 import os
 
 IMU_PRESS_PATH = './Dataset/ori_paths_removebad.txt'
 LENGTH = 64
-INTERVAL = 1
+INTERVAL = 4
 
 
 def Process_data_get_numpy(imu_path, press_path):
@@ -53,24 +54,29 @@ def Process_data_get_numpy_upsample(imu_path, press_path):
     press_label = np.loadtxt(press_path)
     X_row = np.size(imu, 0)
     Y_row = np.size(press_label, 0)
-    # print(X_row, Y_row)
     max_row = max(X_row, Y_row)
-    if Y_row == max_row:
+    # print(X_row, Y_row)
+    if X_row == Y_row:
+        pass
+    elif Y_row == max_row:
         dis = max_row - X_row
-        inter = X_row // dis
+        inter = X_row / dis
+        print(inter)
         _iter = X_row
         cnt = 0
+        p = 1
         # print("interval", inter)
         while _iter:
             cnt += 1
-            if cnt == inter:
+            target = inter * p // 1
+            if cnt == target:
                 to_insert_former = imu[_iter - 1]
                 to_insert_later = imu[_iter]
                 to_insert = [(to_insert_former[i] + to_insert_later[i]) / 2 for i in range(len(to_insert_former))]
                 to_insert = np.array(to_insert)
                 imu = np.insert(imu, _iter, to_insert, axis=0)
                 # print("size: ", np.size(imu, 0))
-                cnt = 0
+                p += 1
             _iter -= 1
         # print(np.size(imu, 0), np.size(press_label))
     elif X_row == max_row:
@@ -138,13 +144,15 @@ print("Val data shape:")
 print(np.array(DEV_X).shape)
 print(np.array(DEV_Y).shape)
 
-dir_name = "./data_process/int_1_len_64_91_upnew/"
+dir_name = "./data_process/int_4_len_64_91_upnew/"
 if os.path.exists(dir_name):
     print("path already exists!!")
     exit()
 else:
+    print("saving ...")
     os.mkdir(dir_name)
     np.save(dir_name + "TRAIN_X_1.npy", np.array(TRAIN_X))
     np.save(dir_name + "TRAIN_Y_1.npy", np.array(TRAIN_Y))
     np.save(dir_name + "DEV_X_1.npy", np.array(DEV_X))
     np.save(dir_name + "DEV_Y_1.npy", np.array(DEV_Y))
+print("complete!!")
