@@ -34,4 +34,4 @@ You may write your own config.py to try different hyperparameters or use differe
 
 * `model_test.py`: Test the trained model which is saved as "name_you_decide.pkl"
 
-* `data_alignment.py`: To align the data (Our data has lots of problems, we suggest you use the data downloaded from Mega, if you need the original data, please contact us by email: ljyuan@bupt.edu.cn).
+* `data_alignment.py`: To align the data (Our data has lots of problems, we suggest you directly use the data downloaded from Mega, if you need the original data, please contact us by email: ljyuan@bupt.edu.cn).
