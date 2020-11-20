@@ -1,8 +1,8 @@
 from __future__ import division
 import numpy as np
-import os
 
 IMU_PRESS_PATH = './Dataset/ori_paths.txt'
+
 
 def Process_data_alignment_precise(imu_path, press_path):
     # print("upsample")
@@ -46,7 +46,7 @@ def Process_data_alignment_precise(imu_path, press_path):
     templist = [imu_date_list[i] + imu_list[i] for i in range(len(imu_date))]
     print("after sample", len(templist), len(press_label))
     return templist
-# data alignment 
+# data alignment
 
 
 def Process_data_alignment(imu_path, press_path):
@@ -92,6 +92,7 @@ def Process_data_alignment(imu_path, press_path):
     print("after sample", len(templist), len(press_label))
     return templist
 
+
 data_path_list = []
 with open(IMU_PRESS_PATH, 'r+', encoding='utf-8') as f:
     for line in f.readlines():
@@ -100,7 +101,7 @@ with open(IMU_PRESS_PATH, 'r+', encoding='utf-8') as f:
 
 for data_path in data_path_list:
     templist = Process_data_alignment_precise(data_path[0], data_path[1])
-    output = open(data_path[0], 'w', encoding='gbk') 
+    output = open(data_path[0], 'w', encoding='gbk')
     for row in templist:
         rowtxt = '{} {} {} {} {} {} {} {}'.format(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7])
         output.write(rowtxt)
