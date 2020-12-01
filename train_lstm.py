@@ -77,7 +77,7 @@ for epoch in range(num_epochs):
     )
 
     print("Validation ...")  # should this be done every N epochs
-    if epoch % 5 == 0:
+    if (epoch + 1) % 5 == 0:
         val_running_loss, val_acc = 0.0, 0.0
 
         # Compute validation loss, accuracy. Use torch.no_grad() & model.eval()

@@ -1,8 +1,8 @@
 import os
 # get .txt document
-rootdir=os.path.join('./Dataset/')
+rootdir=os.path.join('./bupt_data/')
 # read
-write_path=open('./Dataset/ori_paths.txt', 'w')
+write_path=open('./bupt_data/paths.txt', 'w')
 for (dirpath,dirnames,filenames) in os.walk(rootdir):
     for filename in filenames:
         if filename == 'IMU.txt':

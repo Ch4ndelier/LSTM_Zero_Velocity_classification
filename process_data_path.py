@@ -2,7 +2,7 @@ from __future__ import division
 import numpy as np
 import os
 
-IMU_PRESS_PATH = './Dataset/ori_paths_removebad.txt'
+IMU_PRESS_PATH = './bupt_data/paths.txt'
 LENGTH = 64
 INTERVAL = 4
 
@@ -144,7 +144,7 @@ print("Val data shape:")
 print(np.array(DEV_X).shape)
 print(np.array(DEV_Y).shape)
 
-dir_name = "./data_process/int_4_len_64_91_upnew/"
+dir_name = "./data_process/int_4_len_64_91_bupt/"
 if os.path.exists(dir_name):
     print("path already exists!!")
     exit()
