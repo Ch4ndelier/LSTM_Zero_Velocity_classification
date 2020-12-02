@@ -1,7 +1,7 @@
 from __future__ import division
 import numpy as np
 
-IMU_PRESS_PATH = './Dataset/ori_paths.txt'
+IMU_PRESS_PATH = './bupt_data/paths.txt'
 
 
 def Process_data_alignment_precise(imu_path, press_path):
