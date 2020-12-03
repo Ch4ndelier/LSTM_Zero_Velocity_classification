@@ -3,8 +3,8 @@ import numpy as np
 import os
 
 IMU_PRESS_PATH = './bupt_data/paths.txt'
-LENGTH = 64
-INTERVAL = 4
+LENGTH = 100
+INTERVAL = 2
 
 
 def Process_data_get_numpy(imu_path, press_path):
@@ -144,7 +144,7 @@ print("Val data shape:")
 print(np.array(DEV_X).shape)
 print(np.array(DEV_Y).shape)
 
-dir_name = "./data_process/int_4_len_64_91_bupt/"
+dir_name = "./data_process/int_2_len_100_91_bupt/"
 if os.path.exists(dir_name):
     print("path already exists!!")
     exit()

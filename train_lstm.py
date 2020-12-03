@@ -48,8 +48,8 @@ print("learning rate: ", optimizer.defaults['lr'])
 for epoch in range(num_epochs):
 
     train_running_loss, train_acc = 0.0, 0.0
-
-    model.hidden = model.init_hidden()
+    # print(model.hidden)
+    # model.hidden = model.init_hidden()
     for i in range(num_batches):
 
         model.zero_grad()
@@ -58,7 +58,6 @@ for epoch in range(num_epochs):
             train_X[i * batch_size: (i + 1) * batch_size, ],
             train_Y[i * batch_size: (i + 1) * batch_size, ],
         )
-
         X_local_minibatch = X_local_minibatch.permute(1, 0, 2)
         y_local_minibatch = torch.max(y_local_minibatch, 1)[1] # 返回每行最大值(gt)的索引
 
@@ -84,7 +83,7 @@ for epoch in range(num_epochs):
         with torch.no_grad():
             model.eval()
 
-            model.hidden = model.init_hidden()
+            # model.hidden = model.init_hidden()
             for i in range(num_dev_batches):
                 X_local_validation_minibatch, y_local_validation_minibatch = (
                     dev_X[i * batch_size: (i + 1) * batch_size, ],
