@@ -27,7 +27,9 @@ class LSTM(torch.nn.Module):
     def forward(self, input):
         # 输入input x:(seq_len, batch, input_size)
         # input_size:单词向量长度，即输入量长度
+        # seq_len:一个拥立（句子）的词长度
         lstm_out, hidden = self.lstm(input)
+        # lstm_out : (seq_len, batch, num_directions * hidden_size)
         logits = self.linear(lstm_out[-1])
         class_scores = F.log_softmax(logits, dim=1)
         return class_scores
