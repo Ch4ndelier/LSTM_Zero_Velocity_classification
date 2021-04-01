@@ -28,7 +28,8 @@ class LSTM_with_Attention(torch.nn.Module):
         merged_state = merged_state.squeeze(0).unsqueeze(2)
         # merged_state : (batch_size, hidden_size * num_layers * num_directions, 1)
         weights = torch.bmm(lstm_output, merged_state)
-        # TODO:what if num_layer!= 1
+        # TODO: There is a problem
+        # TODO: what if num_layer!= 1
         # weights:(batch, seq_len, 1)
         weights = F.softmax(weights.squeeze(2), dim = 1).unsqueeze(2)
         # weights:(batch, seq_len, 1)
